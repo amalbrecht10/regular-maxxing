@@ -1,0 +1,28 @@
+{
+  "name": "regular-maxing",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "vitest run",
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "screenshots": "LOCAL_SEED=1 vite build && node scripts/screenshots.mjs; status=$?; vite build >/dev/null && node scripts/check-no-seed.mjs && exit $status",
+    "check:public": "node scripts/check-no-seed.mjs"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "private": true,
+  "dependencies": {
+    "leaflet": "^1.9.4"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.65.1",
+    "fake-indexeddb": "^6.2.8",
+    "vite": "^8.3.8",
+    "vitest": "^5.1.0"
+  }
+}

@@ -1,0 +1,114 @@
+{
+  "app": "regular-maxing",
+  "schema": 1,
+  "note": "Fictional demo data for screenshots and tests. These people and places are made up.",
+  "places": [
+    {
+      "id": "demo-taqueria",
+      "name": "Sunset Taqueria",
+      "address": "Sunset Blvd, Los Angeles",
+      "lat": 34.0776,
+      "lon": -118.2601,
+      "osmId": null,
+      "createdAt": "2026-10-02T18:00:00.000Z",
+      "updatedAt": "2026-10-02T18:00:00.000Z"
+    },
+    {
+      "id": "demo-owl",
+      "name": "The Little Owl Bar",
+      "address": "",
+      "lat": 34.0791,
+      "lon": -118.2586,
+      "osmId": null,
+      "createdAt": "2026-09-20T02:00:00.000Z",
+      "updatedAt": "2026-09-20T02:00:00.000Z"
+    },
+    {
+      "id": "demo-bakery",
+      "name": "Laurel Hill Bakery",
+      "address": "",
+      "lat": 34.0852,
+      "lon": -118.2621,
+      "osmId": null,
+      "createdAt": "2026-11-01T15:00:00.000Z",
+      "updatedAt": "2026-11-01T15:00:00.000Z"
+    },
+    {
+      "id": "demo-diner",
+      "name": "Corner Diner",
+      "address": "",
+      "lat": null,
+      "lon": null,
+      "osmId": null,
+      "createdAt": "2026-08-01T15:00:00.000Z",
+      "updatedAt": "2026-08-01T15:00:00.000Z"
+    }
+  ],
+  "people": [
+    {
+      "id": "demo-marisol",
+      "name": "Marisol",
+      "placeId": "demo-taqueria",
+      "role": "Server",
+      "note": "Recommends the al pastor. Studying nursing.",
+      "spellingUnsure": false,
+      "firstMet": "2026-10-02",
+      "lastSeen": "2026-11-14",
+      "visitCount": 5,
+      "createdAt": "2026-10-02T18:00:00.000Z",
+      "updatedAt": "2026-11-14T18:00:00.000Z"
+    },
+    {
+      "id": "demo-ana",
+      "name": "Ana",
+      "placeId": "demo-taqueria",
+      "role": "Manager",
+      "note": "",
+      "spellingUnsure": false,
+      "firstMet": "2026-10-09",
+      "lastSeen": "2026-10-30",
+      "visitCount": 2,
+      "createdAt": "2026-10-09T18:00:00.000Z",
+      "updatedAt": "2026-10-30T18:00:00.000Z"
+    },
+    {
+      "id": "demo-dev",
+      "name": "Dev",
+      "placeId": "demo-owl",
+      "role": "Bartender",
+      "note": "Plays bass on Thursdays",
+      "spellingUnsure": false,
+      "firstMet": "2026-09-20",
+      "lastSeen": "2026-11-08",
+      "visitCount": 4,
+      "createdAt": "2026-09-20T02:00:00.000Z",
+      "updatedAt": "2026-11-08T02:00:00.000Z"
+    },
+    {
+      "id": "demo-kenji",
+      "name": "Kenji",
+      "placeId": "demo-bakery",
+      "role": "Baker",
+      "note": "",
+      "spellingUnsure": true,
+      "firstMet": "2026-11-01",
+      "lastSeen": "2026-11-01",
+      "visitCount": 1,
+      "createdAt": "2026-11-01T15:00:00.000Z",
+      "updatedAt": "2026-11-01T15:00:00.000Z"
+    },
+    {
+      "id": "demo-ruth",
+      "name": "Ruth",
+      "placeId": "demo-diner",
+      "role": "Server",
+      "note": "Always calls everyone hon",
+      "spellingUnsure": false,
+      "firstMet": "2026-08-01",
+      "lastSeen": "2026-08-15",
+      "visitCount": 3,
+      "createdAt": "2026-08-01T15:00:00.000Z",
+      "updatedAt": "2026-08-15T15:00:00.000Z"
+    }
+  ]
+}

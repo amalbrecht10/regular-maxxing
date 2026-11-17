@@ -1,0 +1,52 @@
+{
+  "note": "Canned Overpass response for screenshots. Canyon Coffee is the real OSM node; the others are fictional.",
+  "elements": [
+    {
+      "type": "node",
+      "id": 12695459909,
+      "lat": 34.0813774,
+      "lon": -118.2547445,
+      "tags": {
+        "name": "Canyon Coffee",
+        "amenity": "cafe",
+        "addr:housenumber": "1559",
+        "addr:street": "Echo Park Avenue",
+        "addr:city": "Los Angeles"
+      }
+    },
+    {
+      "type": "node",
+      "id": 900000001,
+      "lat": 34.0817,
+      "lon": -118.2551,
+      "tags": { "name": "Echo Bagel Co.", "amenity": "cafe" }
+    },
+    {
+      "type": "node",
+      "id": 900000002,
+      "lat": 34.0809,
+      "lon": -118.2541,
+      "tags": { "name": "Lemon Grove Kitchen", "amenity": "restaurant" }
+    },
+    {
+      "type": "way",
+      "id": 900000003,
+      "center": { "lat": 34.0822, "lon": -118.2555 },
+      "tags": { "name": "Hilltop Tavern", "amenity": "bar" }
+    },
+    {
+      "type": "node",
+      "id": 900000004,
+      "lat": 34.0801,
+      "lon": -118.2538,
+      "tags": { "name": "Paloma Ice Cream", "amenity": "ice_cream" }
+    },
+    {
+      "type": "node",
+      "id": 900000005,
+      "lat": 34.0795,
+      "lon": -118.2531,
+      "tags": { "name": "Night Owl Noodles", "amenity": "restaurant" }
+    }
+  ]
+}

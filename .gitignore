@@ -1,0 +1,13 @@
+node_modules/
+dist/
+.env
+.env.*
+.DS_Store
+
+# Real people's names never go into the public repo or the public site.
+# seed.local.json holds Alexander's seed record and is applied only on this machine.
+seed.local.json
+# Screenshots show the seed record, so they stay on this machine too.
+screenshots/
+test-results/
+playwright-report/
