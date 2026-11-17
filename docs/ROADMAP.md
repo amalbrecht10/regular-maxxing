@@ -11,6 +11,15 @@ Version 1 is a working PWA: quick log with nearby-place suggestions, the Here sc
 - Watch how often Overpass fails or is slow. If it is often, add a second Overpass mirror (another host receives rounded coordinates, so this is a privacy trade-off to decide on).
 - Decide whether "You're at" should hold for a few minutes after you leave, so the names stay up while you wait for your order outside.
 
+## Move to albrechtanalytics.com (Alexander, 2026-11-17)
+
+Alexander wants the app to live under albrechtanalytics.com eventually, ideally not public. Nothing built so far blocks that; the build uses relative paths and works at any address. Points to decide before the move:
+
+- **Subdomain, not a subpath.** `regulars.albrechtanalytics.com` gives the app its own web origin, so its phone storage and service worker stay separate from the main site's. A path like `albrechtanalytics.com/regulars` would share both with the main site.
+- **The data has to be moved once.** Phone storage belongs to the web address. After the move: Export JSON on the old address, re-add the new address to the Home Screen, Import there. About a minute.
+- **A password protects less than it sounds like.** The names are stored only on the phone and never on the server, so a password in front of the site would protect only the app's code, and that code is already in a public repo. A real password gate (for example Cloudflare Access, if the domain's DNS is on Cloudflare) also costs the installed app: when the sign-in session expires, the Home Screen app can bounce to a sign-in page or open Safari, and it cannot download updates until you sign in again. A password typed into JavaScript on the page is not protection at all.
+- **Recommendation: unlisted instead of password-protected.** Serve it on the subdomain, keep `noindex` (already in `index.html`), and do not link it from the main site. If the code itself should be private too, make the repo private and host it where private repos can deploy (Cloudflare Pages, or GitHub Pages with GitHub Pro).
+
 ## v1.x ideas (small, still a web app)
 
 - **Shortcut to log.** A home-screen quick action or `#/add` deep link that opens straight into the log form, usable from an iOS Shortcut or the Action button.
