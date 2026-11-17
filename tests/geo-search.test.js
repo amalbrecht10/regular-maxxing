@@ -124,7 +124,8 @@ describe("Overpass", () => {
     expect(fetchImpl).toHaveBeenCalledTimes(2);
     expect(venues).toHaveLength(3);
     const init = fetchImpl.mock.calls[0][1];
-    expect(init.referrerPolicy).toBe("no-referrer");
+    // overpass-api.de answers 406 to a browser request with no Referer, so send the site origin only.
+    expect(init.referrerPolicy).toBe("strict-origin-when-cross-origin");
     expect(init.credentials).toBe("omit");
   });
 

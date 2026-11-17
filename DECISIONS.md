@@ -16,7 +16,7 @@ What this means for you: on your phone the app starts empty. Adding the seed per
 
 There are no analytics, no web fonts (system fonts only, since Google Fonts would be a third network call) and no CDN scripts; Leaflet is bundled. The screenshot run asserts this: any request to a host other than the app, `overpass-api.de` or `tile.openstreetmap.org` fails the run.
 
-Two details. First, coordinates sent to Overpass are rounded to 4 decimal places, about 11 m, which is plenty to find the café you are in. Second, the Overpass request uses `referrerPolicy: no-referrer`. The browser still sends an `Origin` header (the site address, not your location) because cross-origin requests always do. Tiles send the site origin as the referrer because the OpenStreetMap tile policy asks apps to identify themselves that way.
+Two details. First, coordinates sent to Overpass are rounded to 4 decimal places, about 11 m, which is plenty to find the café you are in. Second, both Overpass and the tile server receive the site's address (`https://amalbrecht10.github.io/`) as the Referer and Origin, never a page path and never your location. I first sent no Referer at all to Overpass, but the live test showed `overpass-api.de` answers HTTP 406 to a browser request without one, so the lookup always failed. The tile server's usage policy asks for the same identification.
 
 ### 3. Screenshots are not committed
 
@@ -40,7 +40,7 @@ Runtime: `leaflet` 1.9.4 only (the brief asked for Leaflet). Development: `vite`
 
 A small Vite plugin writes `dist/sw.js` with the exact list of built files and a version hash. Every app file is cached on install and served from the cache first, so the app opens instantly with one bar of signal. Map tiles and Overpass are never cached by the service worker. I chose this over `vite-plugin-pwa` (Workbox) because Workbox is large for an app with twelve files.
 
-Trade-off: after a deploy, the phone shows the old version once, installs the new one in the background, and shows the new one next launch.
+Trade-off: after a deploy, a running app keeps the old version until you switch tabs, then reloads once into the new one. It waits for a tab change (and never reloads with the log form open) so nothing you are typing is lost. Without the reload, the Map tab could fail after a deploy, because the old map file is gone from the server. This reload cannot be tested headless; it needs a real deploy and a phone.
 
 ### 8. Hosting on GitHub Pages from a public repo
 
@@ -70,15 +70,15 @@ All are constants at the top of `src/main.js` and `src/db.js`.
 
 ### 12. Overpass details
 
-Venue types: cafe, restaurant, bar, pub, fast_food, ice_cream, biergarten, food_court. Only named venues. One endpoint (`overpass-api.de`) with a 9-second timeout; if it fails, the form says so and you type the place. A second mirror would improve reliability but adds another host that receives your coordinates, so it is in the roadmap instead. While building I saw one empty response from `overpass-api.de` before a retry worked, so failures will happen.
+Venue types: cafe, restaurant, bar, pub, fast_food, ice_cream, biergarten, food_court. Only named venues. One endpoint (`overpass-api.de`) with a 9-second timeout; if it fails, the form says so and you type the place. A second mirror would improve reliability but adds another host that receives your coordinates, so it is in the roadmap instead. Failures will happen. On the night of the build the public server reported itself at capacity ("all query workers are busy") and one valid query took 36 seconds, far past the 9-second limit. **Needs Alexander**: if lookups fail often for you, the fix is a second Overpass server as a fallback (for example a community mirror). It would also receive your rounded coordinates, which is why I did not add one without asking.
 
 ### 13. Dates and visits
 
-"Met" and "last seen" are stored as local calendar dates (`2026-11-12`), not timestamps, so a late-night visit never shows up as the next day after a time-zone change. "Saw them again" counts at most one visit per day, because a visit is a day, not a tap. Last seen never moves backward.
+"Met" and "last seen" are stored as local calendar dates (`2026-11-12`), not timestamps, so a late-night visit never shows up as the next day after a time-zone change. "Saw them again" counts at most one visit per day, because a visit is a day, not a tap. A tap counts only if last seen is before today; if last seen is already today or later (a time-zone change, or an imported future date), the tap adds nothing. Last seen never moves backward. A "Met on" date in the future is clamped to today.
 
 ### 14. Import merges and never deletes
 
-Records match by id. An incoming record replaces the stored one only if its `updatedAt` is newer, so importing an old backup never overwrites newer edits. Bad rows are listed by name, not silently dropped. CSV import can add places but never overwrites a place already on the phone, because CSV rows carry no edit time for places. A CSV with unknown columns is refused with the list of expected columns.
+Records match by id. An incoming record replaces the stored one only if its `updatedAt` is newer, so importing an old backup never overwrites newer edits. A missing or invalid `updatedAt`, or one in the future, counts as the oldest possible time, so it never wins. Ids must be short text values. An incoming place that matches a saved one (same OpenStreetMap id, or same name within 400 m) is merged into it. A CSV row without its own id is skipped if the same name is already saved at that place, so importing the same spreadsheet twice adds nobody twice. Bad rows are listed by name, not silently dropped. A CSV with unknown columns is refused with the list of expected columns.
 
 ### 15. CSV formula injection is neutralised
 
@@ -99,3 +99,13 @@ The alternative, `black-translucent`, always draws white status-bar text, which 
 ### 19. Roadmap location
 
 The roadmap is at `docs/ROADMAP.md`, where Alexander's standing convention keeps it in every project. The brief said `ROADMAP.md`; the content is the same.
+
+## Process
+
+### 20. A fresh-context code review before the first push
+
+A separate reviewer read the code cold and found nine defects: a stale location fix used after a failed one, unvalidated ids and edit times in imports, duplicate records from a double-tapped Save, extra visits counted when last seen was in the future, cached venue distances from an earlier position, the Map tab breaking after a mid-session deploy, duplicate places and people from re-imported CSVs, and a blank app on a malformed link. All nine are fixed. The data-layer fixes each started from a failing test. The UI fixes have end-to-end checks where a headless browser can show them (double save, malformed link). The tenth item is left as is: a race between two open tabs that could leave a person without a place. Such a person already shows under "No place", so nothing is hidden.
+
+### 21. Git history was rebuilt before the first push
+
+The first two local commits had the seed person's name in the unit tests. Nothing had been pushed, so I replaced the tests' names with fictional ones and made one fresh commit. The old local branch is kept, renamed `local-only-old-history`, and was never pushed. `npm run check:public` now also scans every committable file for the seed name, so this cannot happen silently again. **Needs Alexander**: delete that branch when you are satisfied (`git branch -D local-only-old-history`). My attempt to delete it was blocked by the permission system, so I renamed it instead.

@@ -111,7 +111,9 @@ export async function fetchNearbyVenues(
           data: buildOverpassQuery(here.lat, here.lon, radius),
         }),
         signal: controller.signal,
-        referrerPolicy: "no-referrer",
+        // Send only the site origin (https://amalbrecht10.github.io/) as the Referer. It names the
+        // app, not the user, and overpass-api.de rejects browser requests without one (HTTP 406).
+        referrerPolicy: "strict-origin-when-cross-origin",
         credentials: "omit",
       });
       if (!res.ok) throw new Error(`Overpass HTTP ${res.status}`);
